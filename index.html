@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UKRP Development Task Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Development Team Task Sheet</h1>
+            <button id="addTaskBtn" class="btn-primary"><i class="fas fa-plus"></i> Add New Task</button>
+        </header>
+
+        <div class="task-filters">
+            <select id="statusFilter">
+                <option value="all">All Status</option>
+                <option value="complete">Complete</option>
+                <option value="current">Current (Project)</option>
+                <option value="awaiting">Awaiting Development</option>
+                <option value="onhold">On Hold</option>
+            </select>
+            <select id="priorityFilter">
+                <option value="all">All Priorities</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+            </select>
+            <select id="developerFilter">
+                <option value="all">All Developers</option>
+            </select>
+            <input type="text" id="searchTask" placeholder="Search tasks...">
+        </div>
+
+        <div class="task-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date Added</th>
+                        <th>Task</th>
+                        <th>Priority</th>
+                        <th>Developer</th>
+                        <th>Status</th>
+                        <th>Comments</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="taskList">
+                    <!-- Tasks will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Task</h2>
+            <form id="taskForm">
+                <div class="form-group">
+                    <label for="taskTitle">Task Description</label>
+                    <textarea id="taskTitle" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="taskPriority">Priority</label>
+                    <select id="taskPriority" required>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assignedTo">Developer</label>
+                    <select id="assignedTo" required>
+                        <option value="Anyone">Anyone</option>
+                        <option value="Ross">Ross</option>
+                        <option value="Jack">Jack</option>
+                        <option value="Mike">Mike</option>
+                        <option value="Jasper">Jasper</option>
+                        <option value="Macho">Macho</option>
+                        <option value="Charlie">Charlie</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="taskStatus">Status</label>
+                    <select id="taskStatus" required disabled>
+                        <option value="Awaiting Development">Awaiting Development</option>
+                        <option value="Complete">Complete</option>
+                        <option value="Current (Project)">Current (Project)</option>
+                        <option value="On Hold">On Hold</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="taskComments">Comments</label>
+                    <textarea id="taskComments"></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Save Task</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA-a1HdkX2HgI4rMTquavB348KgB2tVNE8",
+            authDomain: "ukrp-88d8f.firebaseapp.com",
+            databaseURL: "https://ukrp-88d8f-default-rtdb.europe-west1.firebasedatabase.app/", // Add this line
+            projectId: "ukrp-88d8f",
+            storageBucket: "ukrp-88d8f.firebasestorage.app",
+            messagingSenderId: "1043689647097",
+            appId: "1:1043689647097:web:071d06590267d203936b28"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
