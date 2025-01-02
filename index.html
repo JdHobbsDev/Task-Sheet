@@ -48,13 +48,11 @@
                     </tr>
                 </thead>
                 <tbody id="taskList">
-                    <!-- Tasks will be inserted here -->
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Task Modal -->
     <div id="taskModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -101,23 +99,19 @@
         </div>
     </div>
 
-
-    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
     <script>
-        // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA-a1HdkX2HgI4rMTquavB348KgB2tVNE8",
             authDomain: "ukrp-88d8f.firebaseapp.com",
-            databaseURL: "https://ukrp-88d8f-default-rtdb.europe-west1.firebasedatabase.app/", // Add this line
+            databaseURL: "https://ukrp-88d8f-default-rtdb.europe-west1.firebasedatabase.app/",
             projectId: "ukrp-88d8f",
             storageBucket: "ukrp-88d8f.firebasestorage.app",
             messagingSenderId: "1043689647097",
             appId: "1:1043689647097:web:071d06590267d203936b28"
         };
         
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
     </script>
     <script src="script.js"></script>

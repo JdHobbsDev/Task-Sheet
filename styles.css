@@ -64,7 +64,6 @@ h1 {
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
 
-/* Task Filters */
 .task-filters {
     display: flex;
     gap: 15px;
@@ -93,7 +92,6 @@ h1 {
     box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
 }
 
-/* Task Table */
 .task-table {
     overflow-x: auto;
     background: var(--card-background);
@@ -129,7 +127,6 @@ tbody tr:hover {
     background-color: var(--hover-color);
 }
 
-/* Status Colors */
 .status-complete {
     color: var(--success-color);
     font-weight: 500;
@@ -150,7 +147,6 @@ tbody tr:hover {
     font-weight: 500;
 }
 
-/* Priority Tags */
 .priority {
     padding: 4px 8px;
     border-radius: 12px;
@@ -174,7 +170,6 @@ tbody tr:hover {
     color: #10b981;
 }
 
-/* Modal Styles */
 .modal {
     display: none;
     position: fixed;
@@ -237,6 +232,11 @@ tbody tr:hover {
     transition: all 0.2s;
 }
 
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
@@ -245,12 +245,6 @@ tbody tr:hover {
     box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
 }
 
-.form-group textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-
-/* Action Buttons */
 .action-buttons {
     display: flex;
     gap: 8px;
@@ -285,7 +279,6 @@ tbody tr:hover {
     transform: translateY(-1px);
 }
 
-/* Scrollbar Styles */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -304,7 +297,6 @@ tbody tr:hover {
     background: #4a4a5e;
 }
 
-/* Responsive Design */
 @media (max-width: 1200px) {
     .task-filters {
         flex-wrap: wrap;

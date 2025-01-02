@@ -1,8 +1,6 @@
-// Initialize Firebase Database reference
 const db = firebase.database();
 const tasksRef = db.ref('tasks');
 
-// DOM Elements
 const modal = document.getElementById('taskModal');
 const addTaskBtn = document.getElementById('addTaskBtn');
 const closeBtn = document.querySelector('.close');
@@ -17,17 +15,15 @@ const taskComments = document.getElementById('taskComments');
 
 let tasks = [];
 
-// Event Listeners
 addTaskBtn.addEventListener('click', () => {
     modal.style.display = 'block';
-    // Reset form and set default status
     taskForm.reset();
     taskStatus.value = 'Awaiting Development';
     taskStatus.disabled = true;
     taskComments.disabled = false;
     if (!taskForm.dataset.editId) {
         document.getElementById('assignedTo').value = 'Anyone';
-        document.getElementById('taskPriority').value = 'Medium'; // Set default priority
+        document.getElementById('taskPriority').value = 'Medium';
     }
 });
 
@@ -43,7 +39,6 @@ window.addEventListener('click', (e) => {
     }
 });
 
-// Initialize developer filter options
 function initializeDeveloperFilter() {
     const developers = ['Anyone', ...new Set(tasks.map(task => task.assignedTo))];
     developerFilter.innerHTML = '<option value="all">All Developers</option>';
@@ -54,13 +49,11 @@ function initializeDeveloperFilter() {
     });
 }
 
-// Filter event listeners
 statusFilter.addEventListener('change', renderTasks);
 priorityFilter.addEventListener('change', renderTasks);
 developerFilter.addEventListener('change', renderTasks);
 searchTask.addEventListener('input', renderTasks);
 
-// Handle form submission
 taskForm.addEventListener('submit', (e) => {
     e.preventDefault();
     
@@ -75,7 +68,6 @@ taskForm.addEventListener('submit', (e) => {
         lastUpdated: new Date().toISOString()
     };
 
-    // Save to Firebase
     tasksRef.child(newTask.id).set(newTask)
         .then(() => {
             taskForm.reset();
@@ -88,7 +80,6 @@ taskForm.addEventListener('submit', (e) => {
         });
 });
 
-// Get status class
 function getStatusClass(status) {
     const statusMap = {
         'Complete': 'complete',
@@ -99,13 +90,11 @@ function getStatusClass(status) {
     return statusMap[status] || '';
 }
 
-// Get priority class
 function getPriorityClass(priority) {
     if (!priority) return 'priority-medium';
     return `priority-${priority.toLowerCase()}`;
 }
 
-// Edit task
 function editTask(id) {
     const task = tasks.find(t => t.id === id);
     if (!task) return;
@@ -116,7 +105,6 @@ function editTask(id) {
     document.getElementById('taskStatus').value = task.status || 'Awaiting Development';
     document.getElementById('taskComments').value = task.comments || '';
     
-    // Enable status selection and comments for editing
     taskStatus.disabled = false;
     taskComments.disabled = false;
     
@@ -124,7 +112,6 @@ function editTask(id) {
     modal.style.display = 'block';
 }
 
-// Delete task
 function deleteTask(id) {
     if (confirm('Are you sure you want to delete this task?')) {
         tasksRef.child(id).remove()
@@ -135,7 +122,6 @@ function deleteTask(id) {
     }
 }
 
-// Render tasks
 function renderTasks() {
     const statusValue = statusFilter.value;
     const priorityValue = priorityFilter.value;
@@ -152,7 +138,6 @@ function renderTasks() {
         return matchStatus && matchPriority && matchDeveloper && matchSearch;
     });
 
-    // Sort tasks by date added (newest first)
     filteredTasks.sort((a, b) => {
         const dateA = new Date(a.dateAdded.split('/').reverse().join('-'));
         const dateB = new Date(b.dateAdded.split('/').reverse().join('-'));
@@ -175,7 +160,6 @@ function renderTasks() {
     `).join('');
 }
 
-// Listen for tasks changes in Firebase
 tasksRef.on('value', (snapshot) => {
     tasks = [];
     snapshot.forEach((childSnapshot) => {
