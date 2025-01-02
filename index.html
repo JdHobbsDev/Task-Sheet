@@ -10,41 +10,82 @@
 <body>
     <div class="container">
         <header>
-            <h1>Development Team Task Sheet</h1>
-            <button id="addTaskBtn" class="btn-primary"><i class="fas fa-plus"></i> Add New Task</button>
+            <div class="header-content">
+                <h1><i class="fas fa-tasks"></i> Development Team Task Sheet</h1>
+                <p class="header-subtitle">Track and manage development tasks efficiently</p>
+            </div>
+            <button id="addTaskBtn" class="btn-primary">
+                <i class="fas fa-plus-circle"></i>
+                Add New Task
+            </button>
         </header>
 
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <h3>Awaiting</h3>
+                <p id="awaitingCount">0</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-code-branch"></i>
+                <h3>In Progress</h3>
+                <p id="inProgressCount">0</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-check-circle"></i>
+                <h3>Completed</h3>
+                <p id="completedCount">0</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-pause-circle"></i>
+                <h3>On Hold</h3>
+                <p id="onHoldCount">0</p>
+            </div>
+        </div>
+
         <div class="task-filters">
-            <select id="statusFilter">
-                <option value="all">All Status</option>
-                <option value="complete">Complete</option>
-                <option value="current">Current (Project)</option>
-                <option value="awaiting">Awaiting Development</option>
-                <option value="onhold">On Hold</option>
-            </select>
-            <select id="priorityFilter">
-                <option value="all">All Priorities</option>
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
-            </select>
-            <select id="developerFilter">
-                <option value="all">All Developers</option>
-            </select>
-            <input type="text" id="searchTask" placeholder="Search tasks...">
+            <div class="filter-group">
+                <i class="fas fa-filter"></i>
+                <select id="statusFilter">
+                    <option value="all">All Status</option>
+                    <option value="complete">Complete</option>
+                    <option value="current">Current (Project)</option>
+                    <option value="awaiting">Awaiting Development</option>
+                    <option value="onhold">On Hold</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <i class="fas fa-exclamation-circle"></i>
+                <select id="priorityFilter">
+                    <option value="all">All Priorities</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <i class="fas fa-user"></i>
+                <select id="developerFilter">
+                    <option value="all">All Developers</option>
+                </select>
+            </div>
+            <div class="filter-group search-group">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchTask" placeholder="Search tasks...">
+            </div>
         </div>
 
         <div class="task-table">
             <table>
                 <thead>
                     <tr>
-                        <th>Date Added</th>
-                        <th>Task</th>
-                        <th>Priority</th>
-                        <th>Developer</th>
-                        <th>Status</th>
-                        <th>Comments</th>
-                        <th>Actions</th>
+                        <th><i class="fas fa-calendar-alt"></i> Date Added</th>
+                        <th><i class="fas fa-tasks"></i> Task</th>
+                        <th><i class="fas fa-flag"></i> Priority</th>
+                        <th><i class="fas fa-user-circle"></i> Developer</th>
+                        <th><i class="fas fa-info-circle"></i> Status</th>
+                        <th><i class="fas fa-comments"></i> Comments</th>
+                        <th><i class="fas fa-cog"></i> Actions</th>
                     </tr>
                 </thead>
                 <tbody id="taskList">
@@ -55,34 +96,46 @@
 
     <div id="taskModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Add New Task</h2>
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Add New Task</h2>
+                <span class="close">&times;</span>
+            </div>
             <form id="taskForm">
                 <div class="form-group">
-                    <label for="taskTitle">Task Description</label>
+                    <label for="taskTitle">
+                        <i class="fas fa-pencil-alt"></i> Task Description
+                    </label>
                     <textarea id="taskTitle" required></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="taskPriority">Priority</label>
-                    <select id="taskPriority" required>
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="taskPriority">
+                            <i class="fas fa-exclamation-circle"></i> Priority
+                        </label>
+                        <select id="taskPriority" required>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="assignedTo">
+                            <i class="fas fa-user"></i> Developer
+                        </label>
+                        <select id="assignedTo" required>
+                            <option value="Anyone">Anyone</option>
+                            <option value="Ross">Ross</option>
+                            <option value="Jack">Jack</option>
+                            <option value="Jasper">Jasper</option>
+                            <option value="Charlie">Charlie</option>
+                            <option value="Connor">Connor</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="assignedTo">Developer</label>
-                    <select id="assignedTo" required>
-                        <option value="Anyone">Anyone</option>
-                        <option value="Ross">Ross</option>
-                        <option value="Jack">Jack</option>
-                        <option value="Jasper">Jasper</option>
-                        <option value="Charlie">Charlie</option>
-                        <option value="Connor">Connor</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="taskStatus">Status</label>
+                    <label for="taskStatus">
+                        <i class="fas fa-info-circle"></i> Status
+                    </label>
                     <select id="taskStatus" required disabled>
                         <option value="Awaiting Development">Awaiting Development</option>
                         <option value="Complete">Complete</option>
@@ -91,10 +144,14 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="taskComments">Comments</label>
+                    <label for="taskComments">
+                        <i class="fas fa-comments"></i> Comments
+                    </label>
                     <textarea id="taskComments"></textarea>
                 </div>
-                <button type="submit" class="btn-primary">Save Task</button>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-save"></i> Save Task
+                </button>
             </form>
         </div>
     </div>

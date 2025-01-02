@@ -15,6 +15,28 @@ const taskComments = document.getElementById('taskComments');
 
 let tasks = [];
 
+function updateDashboardStats() {
+    const stats = {
+        awaiting: 0,
+        current: 0,
+        complete: 0,
+        onhold: 0
+    };
+
+    tasks.forEach(task => {
+        const status = task.status.toLowerCase();
+        if (status.includes('awaiting')) stats.awaiting++;
+        else if (status.includes('current')) stats.current++;
+        else if (status.includes('complete')) stats.complete++;
+        else if (status.includes('hold')) stats.onhold++;
+    });
+
+    document.getElementById('awaitingCount').textContent = stats.awaiting;
+    document.getElementById('inProgressCount').textContent = stats.current;
+    document.getElementById('completedCount').textContent = stats.complete;
+    document.getElementById('onHoldCount').textContent = stats.onhold;
+}
+
 addTaskBtn.addEventListener('click', () => {
     modal.style.display = 'block';
     taskForm.reset();
@@ -90,9 +112,28 @@ function getStatusClass(status) {
     return statusMap[status] || '';
 }
 
+function getStatusIcon(status) {
+    const iconMap = {
+        'Complete': 'fas fa-check-circle',
+        'Current (Project)': 'fas fa-code-branch',
+        'Awaiting Development': 'fas fa-clock',
+        'On Hold': 'fas fa-pause-circle'
+    };
+    return iconMap[status] || 'fas fa-info-circle';
+}
+
 function getPriorityClass(priority) {
     if (!priority) return 'priority-medium';
     return `priority-${priority.toLowerCase()}`;
+}
+
+function getPriorityIcon(priority) {
+    const iconMap = {
+        'High': 'fas fa-arrow-up',
+        'Medium': 'fas fa-equals',
+        'Low': 'fas fa-arrow-down'
+    };
+    return iconMap[priority] || 'fas fa-equals';
 }
 
 function editTask(id) {
@@ -123,8 +164,8 @@ function deleteTask(id) {
 }
 
 function renderTasks() {
-    const statusValue = statusFilter.value;
-    const priorityValue = priorityFilter.value;
+    const statusValue = statusFilter.value.toLowerCase();
+    const priorityValue = priorityFilter.value.toLowerCase();
     const developerValue = developerFilter.value;
     const searchValue = searchTask.value.toLowerCase();
 
@@ -139,25 +180,53 @@ function renderTasks() {
     });
 
     filteredTasks.sort((a, b) => {
+        // First sort by completion status
+        const aComplete = a.status === 'Complete';
+        const bComplete = b.status === 'Complete';
+        if (aComplete !== bComplete) {
+            return aComplete ? 1 : -1;
+        }
+        // Then sort by date
         const dateA = new Date(a.dateAdded.split('/').reverse().join('-'));
         const dateB = new Date(b.dateAdded.split('/').reverse().join('-'));
         return dateB - dateA;
     });
 
     taskList.innerHTML = filteredTasks.map(task => `
-        <tr>
+        <tr class="${task.status === 'Complete' ? 'completed-task' : ''}">
             <td>${task.dateAdded}</td>
             <td>${task.title || ''}</td>
-            <td><span class="priority ${getPriorityClass(task.priority)}">${task.priority || 'Medium'}</span></td>
-            <td>${task.assignedTo || 'Anyone'}</td>
-            <td><span class="status-${getStatusClass(task.status)}">${task.status || 'Awaiting Development'}</span></td>
+            <td>
+                <span class="priority ${getPriorityClass(task.priority)}">
+                    <i class="${getPriorityIcon(task.priority)}"></i>
+                    ${task.priority || 'Medium'}
+                </span>
+            </td>
+            <td>
+                <span class="developer">
+                    <i class="fas fa-user-circle"></i>
+                    ${task.assignedTo || 'Anyone'}
+                </span>
+            </td>
+            <td>
+                <span class="status-${getStatusClass(task.status)}">
+                    <i class="${getStatusIcon(task.status)}"></i>
+                    ${task.status || 'Awaiting Development'}
+                </span>
+            </td>
             <td>${task.comments || ''}</td>
             <td class="action-buttons">
-                <button onclick="editTask('${task.id}')" class="btn-edit"><i class="fas fa-edit"></i></button>
-                <button onclick="deleteTask('${task.id}')" class="btn-delete"><i class="fas fa-trash"></i></button>
+                <button onclick="editTask('${task.id}')" class="btn-edit" title="Edit Task">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button onclick="deleteTask('${task.id}')" class="btn-delete" title="Delete Task">
+                    <i class="fas fa-trash"></i>
+                </button>
             </td>
         </tr>
     `).join('');
+
+    updateDashboardStats();
 }
 
 tasksRef.on('value', (snapshot) => {
