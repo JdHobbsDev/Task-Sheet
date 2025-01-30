@@ -8,89 +8,127 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="header-content">
-                <h1><i class="fas fa-tasks"></i> Development Team Task Sheet</h1>
-                <p class="header-subtitle">Track and manage development tasks efficiently</p>
+    <div class="layout-container">
+        <aside class="sidebar">
+            <div class="user-profile">
+                <img id="userAvatar" src="https://ui-avatars.com/api/?name=User" alt="User Avatar">
+                <h3 id="sidebarUserName">User</h3>
+                <p class="text-muted">Developer</p>
             </div>
-            <button id="addTaskBtn" class="btn-primary">
-                <i class="fas fa-plus-circle"></i>
-                Add New Task
+            
+            <div class="user-stats">
+                <h4>Your Tasks</h4>
+                <div class="stat-item">
+                    <span>Assigned</span>
+                    <span id="userAssignedCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>In Progress</span>
+                    <span id="userProgressCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Completed</span>
+                    <span id="userCompletedCount">0</span>
+                </div>
+            </div>
+            
+            <button class="sign-out-btn" onclick="signOut()">
+                <i class="fas fa-sign-out-alt"></i>
+                Sign Out
             </button>
-        </header>
+        </aside>
 
-        <div class="dashboard-stats">
-            <div class="stat-card">
-                <i class="fas fa-clock"></i>
-                <h3>Awaiting</h3>
-                <p id="awaitingCount">0</p>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-code-branch"></i>
-                <h3>In Progress</h3>
-                <p id="inProgressCount">0</p>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-check-circle"></i>
-                <h3>Completed</h3>
-                <p id="completedCount">0</p>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-pause-circle"></i>
-                <h3>On Hold</h3>
-                <p id="onHoldCount">0</p>
-            </div>
-        </div>
+        <div class="container">
+            <header>
+                <div class="header-content">
+                    <h1><i class="fas fa-tasks"></i> Development Team Task Sheet</h1>
+                    <p class="header-subtitle">Welcome, <span id="userDisplay"></span></p>
+                </div>
+                <button id="addTaskBtn" class="btn-primary">
+                    <i class="fas fa-plus-circle"></i>
+                    Add New Task
+                </button>
+            </header>
 
-        <div class="task-filters">
-            <div class="filter-group">
-                <i class="fas fa-filter"></i>
-                <select id="statusFilter">
-                    <option value="all">All Status</option>
-                    <option value="complete">Complete</option>
-                    <option value="current">Current (Project)</option>
-                    <option value="awaiting">Awaiting Development</option>
-                    <option value="onhold">On Hold</option>
-                </select>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Awaiting</h3>
+                    <p id="awaitingCount">0</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-code-branch"></i>
+                    <h3>In Progress</h3>
+                    <p id="inProgressCount">0</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Completed</h3>
+                    <p id="completedCount">0</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-pause-circle"></i>
+                    <h3>On Hold</h3>
+                    <p id="onHoldCount">0</p>
+                </div>
             </div>
-            <div class="filter-group">
-                <i class="fas fa-exclamation-circle"></i>
-                <select id="priorityFilter">
-                    <option value="all">All Priorities</option>
-                    <option value="high">High</option>
-                    <option value="medium">Medium</option>
-                    <option value="low">Low</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <i class="fas fa-user"></i>
-                <select id="developerFilter">
-                    <option value="all">All Developers</option>
-                </select>
-            </div>
-            <div class="filter-group search-group">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchTask" placeholder="Search tasks...">
-            </div>
-        </div>
 
-        <div class="task-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th><i class="fas fa-calendar-alt"></i> Date Added</th>
-                        <th><i class="fas fa-tasks"></i> Task</th>
-                        <th><i class="fas fa-flag"></i> Priority</th>
-                        <th><i class="fas fa-user-circle"></i> Developer</th>
-                        <th><i class="fas fa-info-circle"></i> Status</th>
-                        <th><i class="fas fa-comments"></i> Comments</th>
-                        <th><i class="fas fa-cog"></i> Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="taskList">
-                </tbody>
-            </table>
+            <div class="expand-completed">
+                <button id="toggleCompleted" class="btn-toggle">
+                    <i class="fas fa-chevron-down"></i>
+                    Show Completed Tasks
+                </button>
+            </div>
+
+            <div class="task-filters">
+                <div class="filter-group">
+                    <i class="fas fa-filter"></i>
+                    <select id="statusFilter">
+                        <option value="all">All Status</option>
+                        <option value="complete">Complete</option>
+                        <option value="current">Current (Project)</option>
+                        <option value="awaiting">Awaiting Development</option>
+                        <option value="onhold">On Hold</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <select id="priorityFilter">
+                        <option value="all">All Priorities</option>
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <i class="fas fa-user"></i>
+                    <select id="developerFilter">
+                        <option value="all">All Developers</option>
+                    </select>
+                </div>
+                <div class="filter-group search-group">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchTask" placeholder="Search tasks...">
+                </div>
+            </div>
+
+            <div class="task-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-calendar-alt"></i> Date Added</th>
+                            <th><i class="fas fa-tasks"></i> Task</th>
+                            <th><i class="fas fa-flag"></i> Priority</th>
+                            <th><i class="fas fa-user-circle"></i> Developer</th>
+                            <th><i class="fas fa-info-circle"></i> Status</th>
+                            <th><i class="fas fa-comments"></i> Comments</th>
+                            <th><i class="fas fa-cog"></i> Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taskList">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -124,11 +162,11 @@
                         </label>
                         <select id="assignedTo" required>
                             <option value="Anyone">Anyone</option>
-                            <option value="Ross">Ross</option>
-                            <option value="Jack">Jack</option>
-                            <option value="Jasper">Jasper</option>
-                            <option value="Charlie">Charlie</option>
-                            <option value="Connor">Connor</option>
+                            <option value="Jack">Jack (Development Manager)</option>
+                            <option value="Ross">Ross (Car Developer)</option>
+                            <option value="Jasper">Jasper (Script Dev)</option>
+                            <option value="Charlie">Charlie (Script Dev)</option>
+                            <option value="Connor">Connor (Script Dev)</option>
                         </select>
                     </div>
                 </div>
@@ -170,6 +208,11 @@
         };
         
         firebase.initializeApp(firebaseConfig);
+    </script>
+    <script>
+        if (!sessionStorage.getItem('auth_token')) {
+            window.location.href = 'login.html';
+        }
     </script>
     <script src="script.js"></script>
 </body>

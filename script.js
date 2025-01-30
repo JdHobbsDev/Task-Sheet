@@ -14,6 +14,30 @@ const taskStatus = document.getElementById('taskStatus');
 const taskComments = document.getElementById('taskComments');
 
 let tasks = [];
+let showCompleted = false;
+const toggleBtn = document.getElementById('toggleCompleted');
+
+const currentUser = sessionStorage.getItem('currentUser');
+const userAvatars = {
+    'Ross': 'https://ui-avatars.com/api/?name=Ross&background=4f46e5&color=fff',
+    'Jack': 'https://ui-avatars.com/api/?name=Jack&background=818cf8&color=fff',
+    'Jasper': 'https://ui-avatars.com/api/?name=Jasper&background=3730a3&color=fff',
+    'Charlie': 'https://ui-avatars.com/api/?name=Charlie&background=6366f1&color=fff',
+    'Connor': 'https://ui-avatars.com/api/?name=Connor&background=4338ca&color=fff'
+};
+
+const userRoles = {
+    'Ross': 'Car Developer',
+    'Jack': 'Development Manager',
+    'Jasper': 'Script God (Love you Jas x)',
+    'Charlie': 'Script Developer',
+    'Connor': 'Script Developer'
+};
+
+document.getElementById('userAvatar').src = userAvatars[currentUser] || 'https://ui-avatars.com/api/?name=User';
+document.getElementById('sidebarUserName').textContent = currentUser;
+document.getElementById('userDisplay').textContent = currentUser;
+document.querySelector('.text-muted').textContent = userRoles[currentUser] || 'Developer';
 
 function updateDashboardStats() {
     const stats = {
@@ -35,6 +59,20 @@ function updateDashboardStats() {
     document.getElementById('inProgressCount').textContent = stats.current;
     document.getElementById('completedCount').textContent = stats.complete;
     document.getElementById('onHoldCount').textContent = stats.onhold;
+}
+
+function updateUserStats() {
+    const userTasks = tasks.filter(task => task.assignedTo === currentUser);
+    
+    const stats = {
+        assigned: userTasks.filter(t => t.status !== 'Complete').length,
+        inProgress: userTasks.filter(t => t.status === 'Current (Project)').length,
+        completed: userTasks.filter(t => t.status === 'Complete').length
+    };
+
+    document.getElementById('userAssignedCount').textContent = stats.assigned;
+    document.getElementById('userProgressCount').textContent = stats.inProgress;
+    document.getElementById('userCompletedCount').textContent = stats.completed;
 }
 
 addTaskBtn.addEventListener('click', () => {
@@ -75,6 +113,21 @@ statusFilter.addEventListener('change', renderTasks);
 priorityFilter.addEventListener('change', renderTasks);
 developerFilter.addEventListener('change', renderTasks);
 searchTask.addEventListener('input', renderTasks);
+
+toggleBtn.addEventListener('click', () => {
+    showCompleted = !showCompleted;
+    toggleBtn.classList.toggle('expanded');
+    
+    const completedTasks = document.querySelectorAll('tr.completed-task');
+    completedTasks.forEach(task => {
+        task.classList.toggle('show');
+    });
+    
+    toggleBtn.innerHTML = `
+        <i class="fas fa-chevron-down"></i>
+        ${showCompleted ? 'Hide' : 'Show'} Completed Tasks
+    `;
+});
 
 taskForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -180,20 +233,20 @@ function renderTasks() {
     });
 
     filteredTasks.sort((a, b) => {
-        // First sort by completion status
+        
         const aComplete = a.status === 'Complete';
         const bComplete = b.status === 'Complete';
         if (aComplete !== bComplete) {
             return aComplete ? 1 : -1;
         }
-        // Then sort by date
+        
         const dateA = new Date(a.dateAdded.split('/').reverse().join('-'));
         const dateB = new Date(b.dateAdded.split('/').reverse().join('-'));
         return dateB - dateA;
     });
 
     taskList.innerHTML = filteredTasks.map(task => `
-        <tr class="${task.status === 'Complete' ? 'completed-task' : ''}">
+        <tr class="${task.status === 'Complete' ? 'completed-task' + (showCompleted ? ' show' : '') : ''}">
             <td>${task.dateAdded}</td>
             <td>${task.title || ''}</td>
             <td>
@@ -227,6 +280,7 @@ function renderTasks() {
     `).join('');
 
     updateDashboardStats();
+    updateUserStats();
 }
 
 tasksRef.on('value', (snapshot) => {
@@ -235,5 +289,12 @@ tasksRef.on('value', (snapshot) => {
         tasks.push(childSnapshot.val());
     });
     initializeDeveloperFilter();
+    updateDashboardStats();
+    updateUserStats();
     renderTasks();
 });
+
+function signOut() {
+    sessionStorage.clear();
+    window.location.href = 'login.html';
+}
