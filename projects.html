@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UKRP Development Projects</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="layout-container">
+        <aside class="sidebar">
+            <div class="user-profile">
+                <img id="userAvatar" src="https://ui-avatars.com/api/?name=User" alt="User Avatar">
+                <h3 id="sidebarUserName">User</h3>
+                <p class="text-muted">Developer</p>
+            </div>
+            
+            <button class="sign-out-btn" onclick="signOut()">
+                <i class="fas fa-sign-out-alt"></i>
+                Sign Out
+            </button>
+        </aside>
+        <div class="container">
+            <header>
+                <div class="header-content">
+                    <h1><i class="fas fa-project-diagram"></i> Development Projects</h1>
+                    <p class="header-subtitle">Welcome, <span id="userDisplay"></span></p>
+                </div>
+                <div class="button-container">
+                    <button onclick="window.location.href='index.html'" class="btn-primary">
+                        <i class="fas fa-tasks"></i>
+                        View Tasks
+                    </button>
+                    <button id="addProjectBtn" class="btn-primary btn-projects">
+                        <i class="fas fa-plus-circle"></i>
+                        Add New Project
+                    </button>
+                </div>
+            </header>
+
+            <div id="projectsList" class="projects-grid">
+                <!-- Projects will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Copy project modal from index.html -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-project-diagram"></i> Add New Project</h2>
+                <span class="close project-close">&times;</span>
+            </div>
+            <form id="projectForm">
+                <div class="form-group">
+                    <label for="projectName">
+                        <i class="fas fa-folder"></i> Project Name
+                    </label>
+                    <input type="text" id="projectName" required>
+                </div>
+                <div class="form-group">
+                    <label for="projectDescription">
+                        <i class="fas fa-file-alt"></i> Description
+                    </label>
+                    <textarea id="projectDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectDevs">
+                        <i class="fas fa-users"></i> Assigned Developers
+                    </label>
+                    <div id="projectDevs" class="dev-checkboxes">
+                        <div><input type="checkbox" id="dev-Jack" value="Jack"><label for="dev-Jack">Jack</label></div>
+                        <div><input type="checkbox" id="dev-Ross" value="Ross"><label for="dev-Ross">Ross</label></div>
+                        <div><input type="checkbox" id="dev-Jasper" value="Jasper"><label for="dev-Jasper">Jasper</label></div>
+                        <div><input type="checkbox" id="dev-Charlie" value="Charlie"><label for="dev-Charlie">Charlie</label></div>
+                        <div><input type="checkbox" id="dev-Connor" value="Connor"><label for="dev-Connor">Connor</label></div>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-save"></i> Create Project
+                </button>
+            </form>
+        </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA-a1HdkX2HgI4rMTquavB348KgB2tVNE8",
+            authDomain: "ukrp-88d8f.firebaseapp.com",
+            databaseURL: "https://ukrp-88d8f-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "ukrp-88d8f",
+            storageBucket: "ukrp-88d8f.appspot.com",
+            messagingSenderId: "1043689647097",
+            appId: "1:1043689647097:web:071d06590267d203936b28"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script>
+        if (!sessionStorage.getItem('auth_token')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+    <script src="projects.js"></script>
+</body>
+</html>
