@@ -1,5 +1,5 @@
 const db = firebase.database();
-const tasksRef = db.ref('tasks');
+const tasksRef = db.ref('tasks'); // Remove forward slash
 
 const modal = document.getElementById('taskModal');
 const addTaskBtn = document.getElementById('addTaskBtn');
@@ -223,75 +223,45 @@ function renderTasks() {
     const searchValue = searchTask.value.toLowerCase();
 
     const filteredTasks = tasks.filter(task => {
-        const matchStatus = statusValue === 'all' || task.status.toLowerCase().includes(statusValue);
-        const matchPriority = priorityValue === 'all' || (task.priority && task.priority.toLowerCase() === priorityValue);
-        const matchDeveloper = developerValue === 'all' || task.assignedTo === developerValue;
-        const matchSearch = (task.title && task.title.toLowerCase().includes(searchValue)) ||
-                          (task.comments && task.comments.toLowerCase().includes(searchValue));
-
-        return matchStatus && matchPriority && matchDeveloper && matchSearch;
+        if (!task) return false;
+        return (statusValue === 'all' || task.status.toLowerCase().includes(statusValue)) &&
+               (priorityValue === 'all' || task.priority.toLowerCase() === priorityValue) &&
+               (developerValue === 'all' || task.assignedTo === developerValue) &&
+               ((task.title && task.title.toLowerCase().includes(searchValue)) ||
+                (task.comments && task.comments.toLowerCase().includes(searchValue)));
     });
 
-    filteredTasks.sort((a, b) => {
-        
-        const aComplete = a.status === 'Complete';
-        const bComplete = b.status === 'Complete';
-        if (aComplete !== bComplete) {
-            return aComplete ? 1 : -1;
-        }
-        
-        const dateA = new Date(a.dateAdded.split('/').reverse().join('-'));
-        const dateB = new Date(b.dateAdded.split('/').reverse().join('-'));
-        return dateB - dateA;
-    });
-
-    taskList.innerHTML = filteredTasks.map(task => `
+    taskList.innerHTML = filteredTasks.length ? filteredTasks.map(task => `
         <tr class="${task.status === 'Complete' ? 'completed-task' + (showCompleted ? ' show' : '') : ''}">
             <td>${task.dateAdded}</td>
             <td>${task.title || ''}</td>
-            <td>
-                <span class="priority ${getPriorityClass(task.priority)}">
-                    <i class="${getPriorityIcon(task.priority)}"></i>
-                    ${task.priority || 'Medium'}
-                </span>
-            </td>
-            <td>
-                <span class="developer">
-                    <i class="fas fa-user-circle"></i>
-                    ${task.assignedTo || 'Anyone'}
-                </span>
-            </td>
-            <td>
-                <span class="status-${getStatusClass(task.status)}">
-                    <i class="${getStatusIcon(task.status)}"></i>
-                    ${task.status || 'Awaiting Development'}
-                </span>
-            </td>
+            <td><span class="priority ${getPriorityClass(task.priority)}">
+                <i class="${getPriorityIcon(task.priority)}"></i>${task.priority || 'Medium'}</span></td>
+            <td>${task.assignedTo || 'Anyone'}</td>
+            <td><span class="status-${getStatusClass(task.status)}">
+                <i class="${getStatusIcon(task.status)}"></i>${task.status}</span></td>
             <td>${task.comments || ''}</td>
             <td class="action-buttons">
-                <button onclick="editTask('${task.id}')" class="btn-edit" title="Edit Task">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button onclick="deleteTask('${task.id}')" class="btn-delete" title="Delete Task">
-                    <i class="fas fa-trash"></i>
-                </button>
+                <button onclick="editTask('${task.id}')" class="btn-edit"><i class="fas fa-edit"></i></button>
+                <button onclick="deleteTask('${task.id}')" class="btn-delete"><i class="fas fa-trash"></i></button>
             </td>
         </tr>
-    `).join('');
-
-    updateDashboardStats();
-    updateUserStats();
+    `).join('') : '<tr><td colspan="7">No tasks found</td></tr>';
 }
 
 tasksRef.on('value', (snapshot) => {
     tasks = [];
     snapshot.forEach((childSnapshot) => {
-        tasks.push(childSnapshot.val());
+        const task = childSnapshot.val();
+        task.id = childSnapshot.key;
+        tasks.push(task);
     });
+    renderTasks();
     initializeDeveloperFilter();
     updateDashboardStats();
     updateUserStats();
-    renderTasks();
+}, (error) => {
+    console.error('Data fetch error:', error);
 });
 
 function signOut() {

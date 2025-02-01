@@ -194,19 +194,21 @@
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <!-- Add Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyA-a1HdkX2HgI4rMTquavB348KgB2tVNE8",
             authDomain: "ukrp-88d8f.firebaseapp.com",
-            databaseURL: "https://ukrp-88d8f-default-rtdb.europe-west1.firebasedatabase.app/",
+            databaseURL: "https://ukrp-88d8f-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "ukrp-88d8f",
-            storageBucket: "ukrp-88d8f.firebasestorage.app",
+            storageBucket: "ukrp-88d8f.appspot.com",
             messagingSenderId: "1043689647097",
             appId: "1:1043689647097:web:071d06590267d203936b28"
         };
-        
         firebase.initializeApp(firebaseConfig);
     </script>
     <script>
