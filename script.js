@@ -21,17 +21,13 @@ const currentUser = sessionStorage.getItem('currentUser');
 const userAvatars = {
     'Ross': 'https://ui-avatars.com/api/?name=Ross&background=4f46e5&color=fff',
     'Jack': 'https://ui-avatars.com/api/?name=Jack&background=818cf8&color=fff',
-    'Jasper': 'https://ui-avatars.com/api/?name=Jasper&background=3730a3&color=fff',
-    'Charlie': 'https://ui-avatars.com/api/?name=Charlie&background=6366f1&color=fff',
-    'Connor': 'https://ui-avatars.com/api/?name=Connor&background=4338ca&color=fff'
+    'Jasper': 'https://ui-avatars.com/api/?name=Jasper&background=3730a3&color=fff'
 };
 
 const userRoles = {
     'Ross': 'Car Developer',
     'Jack': 'Development Manager',
-    'Jasper': 'Script God (Love you Jas x)',
-    'Charlie': 'Script Developer',
-    'Connor': 'Script Developer'
+    'Jasper': 'Script God (Love you Jas x)'
 };
 
 document.getElementById('userAvatar').src = userAvatars[currentUser] || 'https://ui-avatars.com/api/?name=User';
