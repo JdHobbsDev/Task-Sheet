@@ -4,11 +4,7 @@ const _0x2f1a = [
 
     btoa(JSON.stringify({u:'Jack',p:'a10e42a25b0478d89f0bc5d3882cf0ee'})),
 
-    btoa(JSON.stringify({u:'Jasper',p:'a10e42a25b0478d89f0bc5d3882cf0ee'})),
-
-    btoa(JSON.stringify({u:'Charlie',p:'a10e42a25b0478d89f0bc5d3882cf0ee'})),
-
-    btoa(JSON.stringify({u:'Connor',p:'a10e42a25b0478d89f0bc5d3882cf0ee'}))
+    btoa(JSON.stringify({u:'Jasper',p:'a10e42a25b0478d89f0bc5d3882cf0ee'}))
 ];
 
 document.getElementById('loginForm').addEventListener('submit', function(e) {
